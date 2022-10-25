@@ -3,6 +3,7 @@ from tkinter import *
 from time import sleep
 import qrcode
 
+
 # functions
 def clear_url_box():
     content.set("")
@@ -13,11 +14,12 @@ def create_qr():
     update_status("Creating QR Code")
     sleep(0.3)
     data = content.get()
-    qr = qrcode.QRCode(version = 5,box_size = 15,border = 2)
+    qr = qrcode.QRCode(version = 5,box_size = 10,border = 2)
     qr.add_data(data)
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save(data+".png")
+    file_name = f_name.get()
+    img.save(file_name+".png")
     update_status("QR Code Saved at "+ download_path.get())
     sleep(0.5)
     update_status("Ready to Create New QR Code")
@@ -33,6 +35,7 @@ if __name__=="__main__":
 
     # Variables
     content = StringVar()
+    f_name = StringVar()
     downloads_location=StringVar()
     download_path=StringVar()
     temp_path = os.getcwd()
@@ -57,12 +60,14 @@ if __name__=="__main__":
     heading2.pack()
     f1=Frame(root)
     f1.pack(side=TOP,fill=BOTH,expand=True,pady=10)
-    name=Label(f1,text="ENTER TEXT",font="calibre 20 bold italic",relief=FLAT,padx=8,pady=5,)
+    name=Label(f1,text="ENTER CONTENT",font="calibre 15 bold italic",relief=FLAT,padx=8,pady=5)
     name.pack()
-    space=Label(f1,text="",font="calibre 1 bold")
-    space.pack()
-    content_name=Entry(f1,textvariable=content,font="calibre 25 normal",fg="blue",relief=SUNKEN)
+    # space=Label(f1,text="",font="calibre 1 bold")
+    # space.pack()
+    content_name=Entry(f1,textvariable=content,font="calibre 20 normal",fg="blue",relief=SUNKEN,width=40)
     content_name.pack()
+    Label(f1,text="ENTER NAME OF QR CODE",font="calibre 15 bold italic",relief=FLAT,padx=8,pady=5).pack()
+    Entry(f1,textvariable=f_name,font="calibre 20 normal",fg="blue",relief=SUNKEN).pack()
     download_loacation_display=Label(f1,textvariable=downloads_location,font="calibre 10 bold italic",relief=FLAT,padx=18,pady=3)
     download_loacation_display.pack()
     download_btn=Button(f1,text="Create QR",command=create_qr,bd=5,fg="blue",font="calibre 18 bold")
